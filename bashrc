@@ -64,10 +64,82 @@ alias fox='open -a "FireFox"'
 	mktex() {
 		mcd $1
 		touch $1".tex"
+		# Create element directories
+		mkdir img
+
+		# Configure tex skeletons
+		if [ $2 == 'article' ]
+		then
+			mkarticle $1".tex"
+		elif [ $2 == 'beamer' ]
+		then
+			mkbeamer $1".tex"		
+		fi
+	}
+
+# Create new article document
+	mkarticle() {
+		cat <<- 'EOF' > $1
+		% BEGIN PREAMBLE
+		%#####################
+		\documentclass{article}
+
+		% END PREMABLE
+		%#####################
+		\begin{document}
+
+		\end{document}
+		EOF
 	}
 
 # Create new beamer document
-	
+	mkbeamer() {
+		cat <<- 'EOF' > $1
+		% BEGIN PREAMBLE
+		%#####################
+		\documentclass{beamer}
+		\let\Tiny=\tiny
+
+		\usepackage[utf8]{inputenc}
+		\usepackage[british]{babel}
+		\usepackage{listings}
+		\usepackage{datetime}
+		
+		\usetheme{CambridgeUS}
+		\setbeamertemplate{caption}[numbered]
+		
+		\title{Title goes here}
+		\subtitle{Subtitle here}
+		\author{Author}
+		\institute{Institute/Organisation}
+		\newdate{date}{}
+		\date{\displaydate{date}}
+
+		\defbeamertemplate*{footline}{shadow theme}
+		{%
+			\leavevmode%
+			\hbox{\begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm plus1fil,rightskip=.3cm]{author in head/foot}%
+				\usebeamerfont{author in head/foot}\insertframenumber\,/\,\inserttotalframenumber\hfill\insertshortauthor
+			\end{beamercolorbox}%
+			\begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}%
+				\usebeamerfont{title in head/foot}\insertshorttitle%
+			\end{beamercolorbox}}%
+			\vskip0pt%
+		}
+
+		% END PREAMBLE
+		%#####################
+		\begin{document}
+		
+		\frame{\titlepage \centering{\vspace{1cm}}}
+
+		\section*{Section name}
+			\begin{frame}
+				\frametitle{Frame title}
+			\end{frame}
+		\end{document}
+		EOF
+	}
 
 # Clean latex aux files, '2> /dev/null' avoids error message if no file found.
 	latexclean () {
