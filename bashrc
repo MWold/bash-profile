@@ -84,7 +84,7 @@ alias fox='open -a "FireFox"'
 		%#####################
 		\documentclass{article}
 
-		% END PREMABLE
+		% END PREAMBLE
 		%#####################
 		\begin{document}
 
