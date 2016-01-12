@@ -73,7 +73,13 @@ alias fox='open -a "FireFox"'
 			mkarticle $1".tex"
 		elif [ $2 == 'beamer' ]
 		then
-			mkbeamer $1".tex"		
+			mkbeamer $1".tex"
+		elif [ $2 == 'report' ]
+		then
+			touch "glossary.tex"
+			touch "title.tex"
+			mkdir "tex"
+			mkreport $1".tex"
 		fi
 	}
 
@@ -89,7 +95,7 @@ alias fox='open -a "FireFox"'
 		\begin{document}
 
 		\end{document}
-		EOF
+		EOF 
 	}
 
 # Create new beamer document
@@ -137,6 +143,73 @@ alias fox='open -a "FireFox"'
 			\begin{frame}
 				\frametitle{Frame title}
 			\end{frame}
+		\end{document}
+		EOF
+	}
+
+# Create new report document
+	mkreport() {
+		cat <<- 'EOF' > $1
+		% BEGIN PREAMBLE
+		%######################
+		\documentclass[11pt,a4paper,pdftex,dvipsnames]{report}
+		
+		\usepackage[utf8]{inputenc}
+		\usepackage[english]{babel}
+
+		\usepackage{fullpage}
+		
+		\usepackage{graphicx}
+		\usepackage{enumitem}
+		\usepackage{hyperref}
+		\usepackage{float}
+
+		\usepackage[toc,page]{appendix}
+		\usepackage[acronym,nonumberlist]{glossaries}
+		\usepackage{multicol} % Multi-column bibliography
+
+		\usepackage{parskip} % Prevent indent of initial paragraph
+		\setlength{\parindent}{15pt}
+
+		\makeindex
+		\makeglossaries
+
+		% END PREAMBLE
+		%#######################
+		\begin{document}
+
+		\include{glossary}
+		\titlePage
+
+		\newpage
+
+		% TOC
+		%#######################
+		\tableofcontents
+		\newpage
+
+		% Text Body
+		%#######################
+		
+		% START APPENDICES
+		%#######################
+		\begin{appendices}
+
+		% REFERENCES
+		%#######################
+		\bibliographystyle{unsrt}
+		\bibliography{references}
+
+		% ACRONYMS
+		%#######################
+		\printglossary[type=\acronymtype]
+
+		% GLOSSARY
+		%#######################
+		\printglossary
+
+		\end{appendices}
+
 		\end{document}
 		EOF
 	}
