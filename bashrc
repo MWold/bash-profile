@@ -73,7 +73,7 @@ alias fox='open -a "FireFox"'
 			mkarticle $1".tex"
 		elif [ $2 == 'beamer' ]
 		then
-			mkbeamer $1".tex"
+			mkpres $1".tex"
 		elif [ $2 == 'report' ]
 		then
 			touch "glossary.tex"
@@ -99,7 +99,7 @@ alias fox='open -a "FireFox"'
 	}
 
 # Create new beamer document
-	mkbeamer() {
+	mkpres() {
 		cat <<- 'EOF' > $1
 		% BEGIN PREAMBLE
 		%#####################
@@ -118,7 +118,7 @@ alias fox='open -a "FireFox"'
 		\subtitle{Subtitle here}
 		\author{Author}
 		\institute{Institute/Organisation}
-		\newdate{date}{}
+		\newdate{date}{} % Date of presentation goes here
 		\date{\displaydate{date}}
 
 		\defbeamertemplate*{footline}{shadow theme}
