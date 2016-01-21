@@ -65,12 +65,18 @@ mkarticle() {
 	% BEGIN PREAMBLE
 	%#####################
 	\documentclass{article}
+	
+	\usepackage{parskip} # No indent of first line in paragraph
+
+	\title{Title goes here}
+	\author{Author goes here}
 
 	% END PREAMBLE
 	%#####################
 	
 	\begin{document}
-	
+	\maketitle
+
 	\end{document}
 	EOF
 }
