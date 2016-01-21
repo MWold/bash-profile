@@ -59,47 +59,24 @@ alias fox='open -a "FireFox"'
 # Initialize an empty Unity project
 	
 ### Latex ###
-
-# New latex document
-	mktex() {
-		mcd $1
-		touch $1".tex"
-		# Create element directories
-		mkdir img
-
-		# Configure tex skeletons
-		if [ $2 == 'article' ]
-		then
-			mkarticle $1".tex"
-		elif [ $2 == 'beamer' ]
-		then
-			mkpres $1".tex"
-		elif [ $2 == 'report' ]
-		then
-			touch "glossary.tex"
-			touch "title.tex"
-			mkdir "tex"
-			mkreport $1".tex"
-		fi
-	}
-
 # Create new article document
-	mkarticle() {
-		cat <<- 'EOF' > $1
-		% BEGIN PREAMBLE
-		%#####################
-		\documentclass{article}
+mkarticle() {
+	cat <<- "EOF" > $1
+	% BEGIN PREAMBLE
+	%#####################
+	\documentclass{article}
 
-		% END PREAMBLE
-		%#####################
-		\begin{document}
-
-		\end{document}
-		EOF 
-	}
+	% END PREAMBLE
+	%#####################
+	
+	\begin{document}
+	
+	\end{document}
+	EOF
+}
 
 # Create new beamer document
-	mkpres() {
+	mkbeamer() {
 		cat <<- 'EOF' > $1
 		% BEGIN PREAMBLE
 		%#####################
@@ -212,6 +189,29 @@ alias fox='open -a "FireFox"'
 
 		\end{document}
 		EOF
+	}
+
+# New latex document
+	mktex() {
+		mcd $1
+		touch $1".tex"
+		# Create element directories
+		mkdir img
+
+		# Configure tex skeletons
+		if [ $2 == 'article' ]
+		then
+			mkarticle $1".tex"
+		elif [ $2 == 'beamer' ]
+		then
+			mkbeamer $1".tex"
+		elif [ $2 == 'report' ]
+		then
+			touch "glossary.tex"
+			touch "title.tex"
+			mkdir "tex"
+			mkreport $1".tex"
+		fi
 	}
 
 # Clean latex aux files, '2> /dev/null' avoids error message if no file found.
